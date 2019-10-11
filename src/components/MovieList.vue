@@ -2,7 +2,7 @@
   <section>
     <ul>
       <div class="movie" v-for="(movie, index) in movies" :key="index">
-        <img :src="movie.medium_cover_image" />
+          <img class="movie__poster" :src="movie.medium_cover_image" />
         <div class="movie__data">
           <h3 class="movie__title">{{ movie.title }}</h3>
           <h5 class="movie__year">{{ movie.year }}</h5>
@@ -36,7 +36,6 @@ export default {
         })
         .then(response => {
           this.movies = response.data.data.movies;
-          console.log(this.movies);
         })
         .catch(function(err) {})
         .then(function() {});
@@ -75,14 +74,15 @@ export default {
     0 8px 16px -8px rgba(0, 0, 0, 0.3), 0 -6px 16px -6px rgba(0, 0, 0, 0.025);
 }
 
-.movie img {
-  position: relative;
-  top: -50px;
-  max-width: 150px;
-  width: 100%;
-  margin-right: 30px;
-  box-shadow: 0 30px 60px -12px rgba(50, 50, 93, 0.25),
-    0 18px 36px -18px rgba(0, 0, 0, 0.3), 0 -12px 36px -8px rgba(0, 0, 0, 0.025);
+.movie .movie__data{
+    width:30%;
+    box-sizing:border-box;
+    text-overflow: ellipsis;
+}
+
+.movie .movie__data:last-child{
+    padding:20px 0;
+    width:60%;
 }
 
 .movie .movie__title,
@@ -109,5 +109,37 @@ export default {
 .movie .movie__year {
   margin-right: 10px;
   font-size: 14px;
+}
+
+.movie .movie__poster {
+  position: relative;
+  top: -50px;
+  max-width: 150px;
+  width: 100%;
+  margin-right: 30px;
+  box-shadow: 0 30px 60px -12px rgba(50, 50, 93, 0.25),
+    0 18px 36px -18px rgba(0, 0, 0, 0.3), 0 -12px 36px -8px rgba(0, 0, 0, 0.025);
+}
+
+@media screen and (min-width:320px) and (max-width:667px){
+    .movie{
+        width:100%;
+    }
+}
+
+@media screen and (min-width:320px) and (max-width:667px) and (orientation: portrait){
+    .movie .movie__poster{
+      top: 0;
+      left: 0;
+      width: 100%;
+    }
+    .movie .movie__data{
+      width: 100%!important;
+      font-size: 10px;
+    }
+    .movie .movie__title,
+    .movie .movie__year {
+      font-size: 15px;
+    }
 }
 </style>
