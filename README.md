@@ -33,7 +33,7 @@ For detailed explanation on how things work, consult the [docs for vue-loader](h
 - [x] Updating Movie Component
 - [ ] Search Movie title
 - [ ] Paging
-- [ ] Deploy(Production)
+- [x] Deploy(Production)
 
 ## Page
 
