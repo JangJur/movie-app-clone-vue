@@ -19,32 +19,32 @@
 </template>
 
 <script>
+import axios from 'axios';
+import MovieInputVue from './MovieInput.vue';
+import { bus } from './EventBus';
+
 export default {
   data() {
     return {
-      searchItems: [],
       movies: {}
     };
   },
   methods: {
     doDataLoad: function() {
-      const baseURI =
-        "https://yts-proxy.now.sh/list_movies.json?sort_by=rating";
-      this.$http
-        .get(`${baseURI}`, {
-          params: {}
+      var that = this;
+      bus.$on("bus:call", function(e) {
+        axios.get('https://yts-proxy.now.sh/list_movies.json', {
+          params: {
+            sort_by: "rating",
+            query_term: e
+          }
         })
         .then(response => {
-          this.movies = response.data.data.movies;
+          that.movies = response.data.data.movies;
         })
         .catch(function(err) {})
         .then(function() {});
-
-      if (localStorage.length > 0) {
-        for (var i = 0; i < localStorage.length; i++) {
-          this.searchItems.push(localStorage.key(i));
-        }
-      }
+      })
     }
   },
   mounted() {

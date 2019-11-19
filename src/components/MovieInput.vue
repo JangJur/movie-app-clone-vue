@@ -8,6 +8,9 @@
 </template>
 
 <script>
+import MovieListVue from './MovieList.vue';
+import { bus } from './EventBus';
+
 export default {
     data() {
         return {
@@ -16,11 +19,9 @@ export default {
     },
     methods: {
         searchMovie() {
-            if (this.searchItem !== "") {
-                var value = this.searchItem && this.searchItem.trim();
-                localStorage.setItem(value, value);
-                this.clearInput();
-            }
+            var value = this.searchItem && this.searchItem.trim();
+            bus.$emit("bus:call", this.searchItem);
+            this.clearInput();
         },
         clearInput() {
             this.searchItem = '';

@@ -1,5 +1,5 @@
 <template>
-    <div class="pageNumber">footer</div>
+    <div class="pageNumber"></div>
 </template>
 
 <script>
