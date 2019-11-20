@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1 style = "text-align: center;">Movie Chart!</h1>
+        <h1>Movie Chart!</h1>
     </div>
 </template>
 
@@ -12,6 +12,7 @@ export default {
 
 <style>
     h1 {
+        text-align: center;
         color: #2F3B52;
         font-weight: 900;
         margin: 2.5rem 0 1.5rem;

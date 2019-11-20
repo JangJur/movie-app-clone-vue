@@ -7,9 +7,14 @@
           <h3 class="movie__title">{{ movie.title }}</h3>
           <h5 class="movie__year">{{ movie.year }}</h5>
           <ul className="movie__genres">
-            <li v-for="(genre, index2) in movies[index].genres" :key="index2" className="genres__genre">
-                    {{ genre }}
-            </li>
+            <!-- <li v-for="(genre, index2) in movies[index].genres" :key="index2" className="genres__genre">
+              {{ genre }}
+            </li> -->
+            <span v-for="(genre, index) in movie.genres" :key="genre">
+              <li className="genres__genre" v-if="index < 2">
+                {{ genre }}
+              </li>
+            </span>
           </ul>
           <p class="movie__summary">{{ movie.summary.slice(0, 180) }}...</p>
         </div>
@@ -32,18 +37,23 @@ export default {
   methods: {
     doDataLoad: function() {
       var that = this;
-      bus.$on("bus:call", function(e) {
+      bus.$on("bus:call", function(title) {
         axios.get('https://yts-proxy.now.sh/list_movies.json', {
           params: {
             sort_by: "rating",
-            query_term: e
+            query_term: title
           }
         })
         .then(response => {
-          that.movies = response.data.data.movies;
+          if(response.data.data.movie_count !== 0) {
+            that.movies = response.data.data.movies;
+          }
+          else {
+            alert("Input Full Movie Title");
+          }
         })
-        .catch(function(err) {})
-        .then(function() {});
+        .catch(function(err) { })
+        .then(function() { });
       })
     }
   },
