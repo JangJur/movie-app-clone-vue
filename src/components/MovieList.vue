@@ -1,19 +1,17 @@
 <template>
-  <section>
+  <section class="movieContainer">
     <ul>
       <div class="movie" v-for="(movie, index) in movies" :key="index">
-          <img class="movie__poster" :src="movie.medium_cover_image" />
+        <img class="movie__poster" :src="movie.medium_cover_image" />
         <div class="movie__data">
           <h3 class="movie__title">{{ movie.title }}</h3>
           <h5 class="movie__year">{{ movie.year }}</h5>
-          <ul className="movie__genres">
+          <ul class="movie__genres">
             <!-- <li v-for="(genre, index2) in movies[index].genres" :key="index2" className="genres__genre">
               {{ genre }}
-            </li> -->
+            </li>-->
             <span v-for="(genre, index) in movie.genres" :key="genre">
-              <li className="genres__genre" v-if="index < 2">
-                {{ genre }}
-              </li>
+              <li class="genres__genre" v-if="index < 2">{{ genre }}</li>
             </span>
           </ul>
           <p class="movie__summary">{{ movie.summary.slice(0, 180) }}...</p>
@@ -24,9 +22,9 @@
 </template>
 
 <script>
-import axios from 'axios';
-import MovieInputVue from './MovieInput.vue';
-import { bus } from './EventBus';
+import axios from "axios";
+import MovieInputVue from "./MovieInput.vue";
+import { bus } from "./EventBus";
 
 export default {
   data() {
@@ -37,24 +35,26 @@ export default {
   methods: {
     doDataLoad: function() {
       var that = this;
-      bus.$on("bus:call", function(title) {
-        axios.get('https://yts-proxy.now.sh/list_movies.json', {
-          params: {
-            sort_by: "rating",
-            query_term: title
-          }
-        })
-        .then(response => {
-          if(response.data.data.movie_count !== 0) {
-            that.movies = response.data.data.movies;
-          }
-          else {
-            alert("Input Full Movie Title");
-          }
-        })
-        .catch(function(err) { })
-        .then(function() { });
-      })
+      bus.$on("bus:call", function(title, pageNumber) {
+        axios
+          .get("https://yts-proxy.now.sh/list_movies.json", {
+            params: {
+              sort_by: "rating",
+              query_term: title,
+              limit: 6,
+              page: pageNumber
+            }
+          })
+          .then(response => {
+            if (response.data.data.movie_count !== 0) {
+              that.movies = response.data.data.movies;
+            } else {
+              alert("Input Full Movie Title");
+            }
+          })
+          .catch(function(err) {})
+          .then(function() {});
+      });
     }
   },
   mounted() {
@@ -64,6 +64,10 @@ export default {
 </script>
 
 <style>
+.movieContainer {
+  height: 50%;
+}
+
 .movie {
   float: left;
   width: 45%;
@@ -84,15 +88,15 @@ export default {
     0 8px 16px -8px rgba(0, 0, 0, 0.3), 0 -6px 16px -6px rgba(0, 0, 0, 0.025);
 }
 
-.movie .movie__data{
-    width:30%;
-    box-sizing:border-box;
-    text-overflow: ellipsis;
+.movie .movie__data {
+  width: 30%;
+  box-sizing: border-box;
+  text-overflow: ellipsis;
 }
 
-.movie .movie__data:last-child{
-    padding:20px 0;
-    width:60%;
+.movie .movie__data:last-child {
+  padding: 20px 0;
+  width: 60%;
 }
 
 .movie .movie__title,
@@ -131,25 +135,25 @@ export default {
     0 18px 36px -18px rgba(0, 0, 0, 0.3), 0 -12px 36px -8px rgba(0, 0, 0, 0.025);
 }
 
-@media screen and (min-width:320px) and (max-width:667px){
-    .movie{
-        width:100%;
-    }
+@media screen and (min-width: 320px) and (max-width: 667px) {
+  .movie {
+    width: 100%;
+  }
 }
 
-@media screen and (min-width:320px) and (max-width:667px) and (orientation: portrait){
-    .movie .movie__poster{
-      top: 0;
-      left: 0;
-      width: 100%;
-    }
-    .movie .movie__data{
-      width: 100%!important;
-      font-size: 10px;
-    }
-    .movie .movie__title,
-    .movie .movie__year {
-      font-size: 15px;
-    }
+@media screen and (min-width: 320px) and (max-width: 667px) and (orientation: portrait) {
+  .movie .movie__poster {
+    top: 0;
+    left: 0;
+    width: 100%;
+  }
+  .movie .movie__data {
+    width: 100% !important;
+    font-size: 10px;
+  }
+  .movie .movie__title,
+  .movie .movie__year {
+    font-size: 15px;
+  }
 }
 </style>
