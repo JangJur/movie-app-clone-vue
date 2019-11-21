@@ -32,7 +32,7 @@ For detailed explanation on how things work, consult the [docs for vue-loader](h
 - [x] Axios, JSON
 - [x] Updating Movie Component
 - [x] Search Movie title(Unable Full Movie Title)
-- [ ] Paging
+- [x] Paging
 - [x] Deploy(Production)
 
 ## Page
