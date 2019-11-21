@@ -2,7 +2,7 @@
   <div class="inputBox shadow">
     <input
       type="text"
-      v-model="searchItem"
+      v-model="searchTitle"
       placeholder="What do you want to Movie Title"
       v-on:keyup.enter="searchMovie"
     />
@@ -16,21 +16,22 @@
 </template>
 
 <script>
-import MovieListVue from "./MovieList.vue";
-import { bus } from "./EventBus";
 
 export default {
+  
   data() {
     return {
-      searchItem: ""
+      searchTitle: ""
     };
   },
   methods: {
     searchMovie() {
-      bus.$emit("bus:call", this.searchItem, 1);
+      this.$store.state.title = this.searchTitle;
+      this.$store.state.page = 1;
+      this.$store.commit("doDataLoad");
     },
     clearInput() {
-      this.searchItem = "";
+      this.searchTitle = "";
     }
   }
 };
@@ -49,19 +50,19 @@ input:focus {
   height: 50px;
   line-height: 50px;
   border-radius: 5px;
-  width: 60%;
+  width: 50%;
 }
 .inputBox input {
   text-align: center;
   border-style: none;
   font-size: 0.9rem;
-  width: 90%;
+  width: 60%;
 }
 .refreshContainer {
   float: right;
   background: linear-gradient(to right, #6478fb, #8763fb);
   display: block;
-  width: 5%;
+  width: 40px;
 }
 .refreshBtn {
   color: white;
@@ -71,7 +72,7 @@ input:focus {
   float: right;
   background: linear-gradient(to right, #6478fb, #8763fb);
   display: block;
-  width: 5%;
+  width: 40px;
   border-radius: 0 5px 5px 0;
 }
 .searchBtn {

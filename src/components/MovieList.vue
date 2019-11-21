@@ -1,7 +1,7 @@
 <template>
   <section class="movieContainer">
     <ul>
-      <div class="movie" v-for="(movie, index) in movies" :key="index">
+      <div class="movie" v-for="(movie, index) in this.$store.state.movies.movies" :key="index">
         <img class="movie__poster" :src="movie.medium_cover_image" />
         <div class="movie__data">
           <h3 class="movie__title">{{ movie.title }}</h3>
@@ -22,50 +22,19 @@
 </template>
 
 <script>
-import axios from "axios";
-import MovieInputVue from "./MovieInput.vue";
-import { bus } from "./EventBus";
 
 export default {
   data() {
     return {
-      movies: {}
+      movies: this.$store.state.movies
     };
-  },
-  methods: {
-    doDataLoad: function() {
-      var that = this;
-      bus.$on("bus:call", function(title, pageNumber) {
-        axios
-          .get("https://yts-proxy.now.sh/list_movies.json", {
-            params: {
-              sort_by: "rating",
-              query_term: title,
-              limit: 6,
-              page: pageNumber
-            }
-          })
-          .then(response => {
-            if (response.data.data.movie_count !== 0) {
-              that.movies = response.data.data.movies;
-            } else {
-              alert("Input Full Movie Title");
-            }
-          })
-          .catch(function(err) {})
-          .then(function() {});
-      });
-    }
-  },
-  mounted() {
-    this.doDataLoad();
   }
 };
 </script>
 
 <style>
 .movieContainer {
-  height: 50%;
+  height: 720px;
 }
 
 .movie {

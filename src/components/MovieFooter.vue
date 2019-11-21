@@ -8,27 +8,19 @@
 </template>
 
 <script>
-import { bus } from "./EventBus";
-
 export default {
-  data() {
-    return {
-      title: "",
-      pageNumber: 1
-    };
-  },
   methods: {
     prePage() {
-      bus.$on("bus:call", function(title, pageNumber) {
-        this.title = title;
-      });
-      bus.$emit("bus:call", this.title, --this.pageNumber);
+      if(this.$store.state.page > 1) {
+        this.$store.state.page--;
+        this.$store.commit("doDataLoad");
+      }
     },
     nextPage() {
-      bus.$on("bus:call", function(title, pageNumber) {
-        this.title = title;
-      });
-      bus.$emit("bus:call", this.title, ++this.pageNumber);
+      if(this.$store.state.movies.movie_count / 4 > this.$store.state.page) {
+        this.$store.state.page++;
+        this.$store.commit("doDataLoad");
+      }
     }
   }
 };
@@ -50,7 +42,7 @@ export default {
   float: center;
   background: linear-gradient(to right, #6478fb, #8763fb);
   display: block;
-  width: 6%;
+  width: 70px;
 }
 .leftBtn {
   color: white;
